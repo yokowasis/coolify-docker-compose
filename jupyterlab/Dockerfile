@@ -17,15 +17,8 @@ RUN curl -fsSL https://deno.land/x/install/install.sh | sh
 ENV CONDA_PACKAGES=""
 ENV PIP_PACKAGES=""
 
-RUN micromamba install --yes --name base -c bioconda -c conda-forge \
-      python=3.10 \
-      pip \
-      xeus-cling \
-      jupyterlab \
-      ${CONDA_PACKAGES}
+RUN micromamba install --yes --name base -c bioconda -c conda-forge python=3.10 pip xeus-cling jupyterlab 
       
-RUN if [ -n "${PIP_PACKAGES}" ]; then micromamba run -n base pip install --no-cache ${PIP_PACKAGES}; fi
-
 RUN micromamba clean --all --yes
 RUN ~/.deno/bin/deno jupyter --install --unstable --quiet
 
@@ -37,5 +30,7 @@ ENV PORT=8008
 ENV TOKEN=SomeRandomToken
 
 EXPOSE ${PORT}
+
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "sh", "-c", "micromamba install --yes --name base -c bioconda -c conda-forge python=3.10 pip xeus-cling jupyterlab ${CONDA_PACKAGES} && micromamba run -n base pip install --no-cache pip ${PIP_PACKAGES}"]
 
 CMD ["sh", "-c", "jupyter lab --ip=0.0.0.0 --port=${PORT} --no-browser --allow-root --ServerApp.allow_origin='*' --ServerApp.token=${TOKEN}"]
