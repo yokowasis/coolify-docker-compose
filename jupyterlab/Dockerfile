@@ -31,6 +31,4 @@ ENV TOKEN=SomeRandomToken
 
 EXPOSE ${PORT}
 
-ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "sh", "-c", "micromamba install --yes --name base -c bioconda -c conda-forge python=3.10 pip xeus-cling jupyterlab ${CONDA_PACKAGES} && micromamba run -n base pip install --no-cache pip ${PIP_PACKAGES}"]
-
-CMD ["sh", "-c", "jupyter lab --ip=0.0.0.0 --port=${PORT} --no-browser --allow-root --ServerApp.allow_origin='*' --ServerApp.token=${TOKEN}"]
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "sh", "-c", "micromamba install --yes --name base -c bioconda -c conda-forge python=3.10 pip xeus-cling jupyterlab ${CONDA_PACKAGES} && micromamba run -n base pip install --no-cache pip ${PIP_PACKAGES} && jupyter lab --ip=0.0.0.0 --port=${PORT} --no-browser --allow-root --ServerApp.allow_origin='*' --ServerApp.token=${TOKEN}"]
