@@ -19,3 +19,15 @@ services:
       - PIP_PACKAGES=${PIP_PACKAGES:-sastrawi}
     volumes:
       - jupyterlab_data:/home/mambauser/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:8008/api/profile', (r) => {if (r.statusCode !== 200) process.exit(1); else process.exit(0); }).on('error', () => process.exit(1))",
+        ]
+      timeout: 5s
+      interval: 5s
+      retries: 3
+      
