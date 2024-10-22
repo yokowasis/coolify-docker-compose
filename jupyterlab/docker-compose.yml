@@ -23,9 +23,9 @@ services:
       test:
         [
           "CMD",
-          "node",
-          "-e",
-          "require('http').get('http://127.0.0.1:8008/', (r) => {if (r.statusCode !== 200) process.exit(1); else process.exit(0); }).on('error', () => process.exit(1))",
+          "curl",
+          "-f",
+          "http://127.0.0.1:8008/login/",
         ]
       timeout: 5s
       interval: 5s
