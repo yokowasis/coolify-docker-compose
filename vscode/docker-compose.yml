@@ -16,6 +16,7 @@ services:
       - TOKEN=${SERVICE_PASSWORD_TOKEN}
     volumes:
       - msvscode_data:/root
+    restart: unless-stopped
     healthcheck:
       test:
         [
@@ -25,6 +26,6 @@ services:
           "http://127.0.0.1:8080/?tkn=${SERVICE_PASSWORD_TOKEN}",
         ]
       timeout: 5s
-      interval: 10s
+      interval: 60s
       retries: 3
       

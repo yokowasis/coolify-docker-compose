@@ -19,6 +19,7 @@ services:
       - PIP_PACKAGES=${PIP_PACKAGES:-sastrawi}
     volumes:
       - jupyterlab_data:/home/mambauser/data
+    restart: unless-stopped      
     healthcheck:
       test:
         [
