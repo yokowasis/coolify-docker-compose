@@ -28,6 +28,6 @@ services:
           "http://127.0.0.1:8008/login/",
         ]
       timeout: 5s
-      interval: 5s
+      interval: 60s
       retries: 3
       
