@@ -4,7 +4,7 @@ FROM mambaorg/micromamba
 
 USER root
 
-RUN apt-get update && apt-get install -y curl unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openssh-client curl unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER mambauser
 
