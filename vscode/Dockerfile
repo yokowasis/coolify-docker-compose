@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y python3.10 python3.10-venv \
 ENV TOKEN="333333"
 
 # Start VS Code to listen on all interfaces and with specified connection token
-ENTRYPOINT ["sh", "-c", "source /opt/nvm/nvm.sh && /usr/bin/code serve-web --host 0.0.0.0 --port 8080 --connection-token $TOKEN"]
+ENTRYPOINT ["sh", "-c", ". /opt/nvm/nvm.sh && /usr/bin/code serve-web --host 0.0.0.0 --port 8080 --connection-token $TOKEN"]
 
 # Expose port 8080 (default port for VS Code)
 EXPOSE 8080
