@@ -1,6 +1,7 @@
 # documentation: https://code.visualstudio.com/docs
 # slogan: Unofficial Microsoft VSCode Docker Image. Only for personal use.
 # tags: msvscode
+# logo: svgs/msvscode.svg
 # port: 8080
 
 version: '3.8'
