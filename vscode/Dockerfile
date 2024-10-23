@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 ENV NVM_DIR=/opt/nvm
 RUN mkdir -p $NVM_DIR \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash \
-    && bash -c 'source $NVM_DIR/nvm.sh && nvm install 20'
+    && bash -c 'source $NVM_DIR/nvm.sh && nvm install 20 && npm i -g yarn pnpm'
 ENV PATH=$NVM_DIR/versions/node/v20.0.0/bin:$PATH
 
 # Install Microsoft VS Code
