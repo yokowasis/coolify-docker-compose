@@ -26,26 +26,71 @@ services:
       timeout: 5s
       interval: 60s
       retries: 3
+    depends_on:
+      - jackettindexer
+      - warp
     environment:
       - SERVICE_FQDN_COMET
-      - ADDON_ID=${ADDON_ID:-stremio.comet.fast} # for Stremio
-      - ADDON_NAME=${ADDON_NAME:-Comet} # for Stremio
-      - FASTAPI_HOST=${FASTAPI_HOST:-0.0.0.0}
-      - FASTAPI_PORT=${FASTAPI_PORT:-8000}
-      - INDEXER_MANAGER_INDEXERS=${INDEXER_MANAGER_INDEXERS:-["bitsearch", "eztv", "thepiratebay"]}
-      - FASTAPI_WORKERS=${FASTAPI_WORKERS:-1} # remove to destroy CPU -> max performances :D
-      - DASHBOARD_ADMIN_PASSWORD=${SERVICE_PASSWORD_ADMINPASSWORD} # The password to access the dashboard with active connections andw soon more...
+      - ADDON_ID=stremio.comet.fastselfhost # for Stremio
+      - ADDON_NAME=Comet # for Stremio
+      - FASTAPI_HOST=0.0.0.0
+      - FASTAPI_PORT=8000
+      - FASTAPI_WORKERS=1 # remove to destroy CPU -> max performances :D
+      - DASHBOARD_ADMIN_PASSWORD=${SERVICE_PASSWORD_ADMINPASSWORD} # The password to access the dashboard with active connections and soon more...
       - DATABASE_TYPE=${DATABASE_TYPE:-sqlite} # or postgresql if you know what you're doing
+      - DATABASE_URL=${DATABASE_URL:-username:password@hostname:port} # to connect to PostgreSQL
       - DATABASE_PATH=${DATABASE_PATH:-data/comet.db} # only change it if you know what it is - folders in path must exist - ignored if PostgreSQL used
       - CACHE_TTL=${CACHE_TTL:-86400} # cache duration in seconds
-      - GET_TORRENT_TIMEOUT=${GET_TORRENT_TIMEOUT:-5} # maximum time to obtain the torrent info hash in seconds
+      - DEBRID_PROXY_URL=http://warp:1080 # https://github.com/cmj2002/warp-docker to bypass Debrid Services and Torrentio server IP blacklist
+      - INDEXER_MANAGER_TYPE=jackett
+      - INDEXER_MANAGER_URL=http://jackettindexer:9117
+      - INDEXER_MANAGER_API_KEY=${INDEXER_MANAGER_API_KEY:-r867ho2a19up4jsghe81s48eim6fq0lg}
+      - INDEXER_MANAGER_TIMEOUT=${INDEXER_MANAGER_TIMEOUT:-60} # maximum time to obtain search results from indexer manager in seconds
+      - INDEXER_MANAGER_INDEXERS=${INDEXER_MANAGER_INDEXERS:-["1337x", "thepiratebay"]}
+      - GET_TORRENT_TIMEOUT=5 # maximum time to obtain the torrent info hash in seconds
       - ZILEAN_URL=${ZILEAN_URL:-None} # for DMM search - https://github.com/iPromKnight/zilean - ex: http://127.0.0.1:8181
-      - CUSTOM_HEADER_HTML=${CUSTOM_HEADER_HTML:-None} # only set it if you know what it is
-      - PROXY_DEBRID_STREAM=${PROXY_DEBRID_STREAM:-False} # Proxy Debrid Streams (very useful to use your debrid service on multiple IPs at same time)
-      - PROXY_DEBRID_STREAM_PASSWORD=${SERVICE_PASSWORD_DEBRIDSTREAMPASSWORD} # Secret password to enter on configuration page to prevent people from abusing your debrid stream proxy
+      - ZILEAN_TAKE_FIRST=${ZILEAN_TAKE_FIRST:-500} # only change it if you know what it is
+      - SCRAPE_TORRENTIO=${SCRAPE_TORRENTIO:-True} # scrape Torrentio
+      - PROXY_DEBRID_STREAM=${PROXY_DEBRID_STREAM:-True} # Proxy Debrid Streams (very useful to use your debrid service on multiple IPs at same time)
+      - PROXY_DEBRID_STREAM_PASSWORD=${SERVICE_PASSWORD_STREAMPASSWORD} # Secret password to enter on configuration page to prevent people from abusing your debrid stream proxy
       - PROXY_DEBRID_STREAM_MAX_CONNECTIONS=${PROXY_DEBRID_STREAM_MAX_CONNECTIONS:-100} # IP-Based connection limit for the Debrid Stream Proxy
       - PROXY_DEBRID_STREAM_DEBRID_DEFAULT_SERVICE=${PROXY_DEBRID_STREAM_DEBRID_DEFAULT_SERVICE:-realdebrid} # if you want your users who use the Debrid Stream Proxy not to have to specify Debrid information, but to use the default one instead
       - PROXY_DEBRID_STREAM_DEBRID_DEFAULT_APIKEY=${PROXY_DEBRID_STREAM_DEBRID_DEFAULT_APIKEY} # if you want your users who use the Debrid Stream Proxy not to have to specify Debrid information, but to use the default one instead
+      - TITLE_MATCH_CHECK=False # disable if you only use Jackett / Prowlarr / Torrentio and are sure you're only scraping good titles, for example (keep it True if Zilean is enabled)
+      - CUSTOM_HEADER_HTML=None # only set it if you know what it is
 
-volumes:
-  comet_data:
+  jackettindexer:
+    image: lscr.io/linuxserver/jackett:latest
+    environment:
+      - SERVICE_FQDN_JACKETT
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - AUTO_UPDATE=true
+      - RUN_OPTS=
+    volumes:
+      - jacket_data:/config
+      - blackhole_data:/downloads
+    expose:
+      - 9117
+    restart: unless-stopped
+
+  warp:
+    image: caomingjun/warp
+    restart: always
+    expose:
+      - 1080
+    environment:
+      - WARP_SLEEP=2
+      # - WARP_LICENSE_KEY= # optional
+    cap_add:
+      # Docker already have them, these are for podman users
+      - MKNOD
+      - AUDIT_WRITE
+      # additional required cap for warp, both for podman and docker
+      - NET_ADMIN
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv4.conf.all.src_valid_mark=1
+    volumes:
+      - warp_data:/var/lib/cloudflare-warp
