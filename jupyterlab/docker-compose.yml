@@ -4,7 +4,7 @@
 # logo: svgs/jupyterlab.svg
 # port: 8008
 
-version: '3.8'
+version: "3.8"
 
 services:
   jupyterlab:
@@ -19,16 +19,9 @@ services:
       - PIP_PACKAGES=${PIP_PACKAGES:-sastrawi}
     volumes:
       - jupyterlab_data:/home/mambauser/data
-    restart: unless-stopped      
+    restart: unless-stopped
     healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://127.0.0.1:8008/login/",
-        ]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8008/login/"]
       timeout: 5s
       interval: 60s
       retries: 3
-      
