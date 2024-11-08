@@ -1,0 +1,78 @@
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - SERVICE_FQDN_PLEX
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - plex_data:/config
+      - tv_downloads:/downloads/tv
+      - movies_downloads:/downloads/movies
+    restart: unless-stopped
+  rdtclient:
+    image: rogerfar/rdtclient
+    container_name: rdtclient
+    environment:
+      - SERVICE_FQDN_RDTCLIENT
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - rdt_data:/data/db
+      - rdt_downloads:/data/downloads
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    expose:
+      - 6500
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - SERVICE_FQDN_RADARR
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - radarr_data:/config
+      - movies_downloads:/movies #optional
+      - rdt_downloads:/downloads #optional
+    expose:
+      - 7878
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - SERVICE_FQDN_SONARR
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - sonarr_data:/config
+      - tv_downloads:/tv #optional
+      - rdt_downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - SERVICE_FQDN_PROWLARR
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - prowlarr_data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
