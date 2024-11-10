@@ -60,8 +60,8 @@ services:
       - sonarr_data:/config
       - tv_downloads:/tv #optional
       - rdt_downloads:/downloads #optional
-    ports:
-      - 8989:8989
+    expose:
+      - 8989
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
