@@ -1,0 +1,18 @@
+# documentation: https://github.com/g0ldyy/comet
+# slogan: The only Stremio addon that can Proxy Debrid Streams to allow use of the Debrid Service on multiple IPs at the same time on the same account!
+# tags: comet
+# logo: svgs/comet.svg
+# port: 6080
+
+services:
+  android-emulator:
+    image: budtmo/docker-android:emulator_11.0
+    expose:
+      - 6080
+    environment:
+      - SERVICE_FQDN_ANDROIDEMULATOR
+      - EMULATOR_DEVICE=Samsung Galaxy S10
+      - WEB_VNC=true
+    devices:
+      - "/dev/kvm:/dev/kvm"
+    restart: unless-stopped
