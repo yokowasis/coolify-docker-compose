@@ -59,22 +59,6 @@ services:
       - TITLE_MATCH_CHECK=True
       - CUSTOM_HEADER_HTML=None
 
-  jackettindexer:
-    image: lscr.io/linuxserver/jackett:latest
-    environment:
-      - SERVICE_FQDN_JACKETT
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - AUTO_UPDATE=true
-      - RUN_OPTS=
-    volumes:
-      - jacket_data:/config
-      - blackhole_data:/downloads
-    expose:
-      - 9117
-    restart: unless-stopped
-
   warp:
     image: caomingjun/warp
     restart: always
