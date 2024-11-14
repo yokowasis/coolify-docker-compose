@@ -89,6 +89,6 @@ services:
       - TZ=Etc/UTC
     volumes:
       - prowlarr_data:/config
-    expost:
+    expose:
       - 9696
     restart: unless-stopped
