@@ -27,7 +27,7 @@ services:
       interval: 60s
       retries: 3
     depends_on:
-      - jackettindexer
+      - prowlarr
       - warp
     environment:
       - SERVICE_FQDN_COMET
