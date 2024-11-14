@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  annatar:
+    image: registry.gitlab.com/stremio-add-ons/annatar:latest
+    container_name: annatar
+    depends_on:
+      - jackett
+    expose:
+      - 8000
+    volumes:
+      - annatar_data:/app/data
+    environment:
+      - SERVICE_FQDN_ANNATAR
+      - JACKETT_URL: jackett
+      - JACKETT_API_KEY: ${JACKETT_API_KEY:-<your jackett api key>}
+      - JACKETT_INDEXERS: ${INDEXER:-eztv,kickasstorrents-ws,thepiratebay,therarbg,torrentgalaxy,yts,badasstorrents,limetorrents,bitsearch}
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    environment:
+      - SERVICE_FQDN_JACKETT
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - AUTO_UPDATE=true
+      - RUN_OPTS=
+    volumes:
+      - jacket_data:/config
+      - blackhole_data:/downloads
+    expose:
+      - 9117
+    restart: unless-stopped
+
+volumes:
+  annatar_data:
+  jacket_data:
+  blackhole_data:
