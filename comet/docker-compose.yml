@@ -42,8 +42,8 @@ services:
       - DATABASE_PATH=data/comet.db
       - CACHE_TTL=86400
       - DEBRID_PROXY_URL=http://warp:1080
-      - INDEXER_MANAGER_TYPE=jackett
-      - INDEXER_MANAGER_URL=http://jackettindexer:9117
+      - INDEXER_MANAGER_TYPE=prowlarr
+      - INDEXER_MANAGER_URL=http://prowlarr:9696
       - INDEXER_MANAGER_API_KEY=${INDEXER_MANAGER_API_KEY}
       - INDEXER_MANAGER_TIMEOUT=60
       - INDEXER_MANAGER_INDEXERS=${INDEXER_MANAGER_INDEXERS:-[]}
