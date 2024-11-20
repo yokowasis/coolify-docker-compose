@@ -1,0 +1,9 @@
+services:
+  android-build-env:
+    image: yokowasis/android-build-env:latest
+    container_name: android-build-env
+    env_file:
+      - .env
+    volumes:
+      - ${WORKSPACE}:/workspace # Mount local folder to /workspace in the container
+    working_dir: /workspace
