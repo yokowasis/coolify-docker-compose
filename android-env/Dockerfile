@@ -12,7 +12,7 @@ ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$AN
 ENV MAMBA_ROOT_PREFIX=/opt/conda
 ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
 
-# Install required dependencies and Node.js LTS
+# Install required dependencies, Apache, PHP, and Node.js LTS
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jdk \
     wget \
@@ -26,6 +26,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libsm6 \
     libxrender1 \
+    apache2 \
+    libapache2-mod-php \
+    php-cli \
+    php-common \
+    php-curl \
+    php-mbstring \
+    php-xml \
+    php-zip \
+    php-mysql \
+    php-intl \
+    php-soap \
+    php-bcmath \
+    php-redis \
+    php-xdebug \
     && \
     # Install Node.js LTS
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
@@ -34,6 +48,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba && \
     # Clean up
     rm -rf /var/lib/apt/lists/*
+
+# Configure Apache to enable PHP and rewrite module
+RUN a2enmod php8.3 && a2enmod rewrite
 
 # Create the base environment and install Python packages
 RUN micromamba create --yes --name base python=3.10 && \
@@ -65,5 +82,15 @@ RUN wget https://services.gradle.org/distributions/gradle-8.3-bin.zip -O /gradle
     ln -s /opt/gradle-8.3/bin/gradle /usr/bin/gradle && \
     rm /gradle.zip
 
-# Default command to provide an interactive shell
-CMD ["micromamba", "run", "-n", "base", "bash"]
+# Configure Xdebug
+RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.mode=debug" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.start_with_request=yes" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.client_host=host.docker.internal" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.client_port=9003" >> /etc/php/8.3/apache2/php.ini
+
+# Expose Apache port
+EXPOSE 80
+
+# Default command to start Apache in the foreground
+CMD ["apachectl", "-D", "FOREGROUND"]
