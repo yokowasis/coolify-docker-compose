@@ -9,8 +9,9 @@ services:
       - ${WORKSPACE}:/var/www/html
       - home:/root
     ports:
-      - "4080:8080"
+      - "4080:8000"
       - "4081:80"
+      - "9003:9003"
     working_dir: /workspace
     restart: unless-stopped
     tty: true
