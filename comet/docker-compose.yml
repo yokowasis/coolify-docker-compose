@@ -27,7 +27,7 @@ services:
       interval: 60s
       retries: 3
     depends_on:
-      - jackettindexer
+      - prowlarr
       - warp
     environment:
       - SERVICE_FQDN_COMET
@@ -42,8 +42,8 @@ services:
       - DATABASE_PATH=data/comet.db
       - CACHE_TTL=86400
       - DEBRID_PROXY_URL=http://warp:1080
-      - INDEXER_MANAGER_TYPE=jackett
-      - INDEXER_MANAGER_URL=http://jackettindexer:9117
+      - INDEXER_MANAGER_TYPE=prowlarr
+      - INDEXER_MANAGER_URL=http://prowlarr:9696
       - INDEXER_MANAGER_API_KEY=${INDEXER_MANAGER_API_KEY}
       - INDEXER_MANAGER_TIMEOUT=60
       - INDEXER_MANAGER_INDEXERS=${INDEXER_MANAGER_INDEXERS:-[]}
@@ -58,22 +58,6 @@ services:
       - PROXY_DEBRID_STREAM_DEBRID_DEFAULT_APIKEY=${DEBRID_API_KEY}
       - TITLE_MATCH_CHECK=True
       - CUSTOM_HEADER_HTML=None
-
-  jackettindexer:
-    image: lscr.io/linuxserver/jackett:latest
-    environment:
-      - SERVICE_FQDN_JACKETT
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - AUTO_UPDATE=true
-      - RUN_OPTS=
-    volumes:
-      - jacket_data:/config
-      - blackhole_data:/downloads
-    expose:
-      - 9117
-    restart: unless-stopped
 
   warp:
     image: caomingjun/warp
@@ -94,3 +78,17 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - warp_data:/var/lib/cloudflare-warp
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - SERVICE_FQDN_PROWLARR
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - prowlarr_data:/config
+    expose:
+      - 9696
+    restart: unless-stopped

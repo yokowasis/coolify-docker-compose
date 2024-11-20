@@ -1,0 +1,34 @@
+services:
+  jackett-stremio:
+    image: tsaridas/jackett-stremio:latest
+    container_name: jackett-stremio
+    environment:
+      - SERVICE_FQDN_JACKETTSTREMIO
+      - JACKETT_HOSTS=http://jackett:9117/
+      - JACKETT_APIKEYS=${JACKETT_APIKEYS:-YOUR_API_KEY}
+    expose:
+      - 7000
+    restart: unless-stopped
+    depends_on:
+      - jackett
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - SERVICE_FQDN_JACKETT
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - AUTO_UPDATE=true
+      - RUN_OPTS=
+    volumes:
+      - jacket_data:/config
+      - blackhole_data:/downloads
+    expose:
+      - 9117
+    restart: unless-stopped
+
+volumes:
+  jacket_data:
+  blackhole_data:
