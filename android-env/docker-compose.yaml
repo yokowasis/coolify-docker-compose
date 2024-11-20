@@ -7,3 +7,5 @@ services:
     volumes:
       - ${WORKSPACE}:/workspace # Mount local folder to /workspace in the container
     working_dir: /workspace
+    tty: true
+    stdin_open: true
