@@ -6,22 +6,15 @@ services:
       - .env
     volumes:
       - ${WORKSPACE}:/workspace
+      - ${WORKSPACE}:/var/www/html
       - home:/root
     ports:
       - "4080:8080"
+      - "4081:80"
     working_dir: /workspace
     restart: unless-stopped
     tty: true
     stdin_open: true
-
-  php:
-    image: php:8.2-apache
-    container_name: php-service
-    restart: unless-stopped
-    ports:
-      - "4081:80"
-    volumes:
-      - ${WORKSPACE}:/var/www/html
 
   mysql:
     image: mysql:8.0
