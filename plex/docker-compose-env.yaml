@@ -1,49 +1,4 @@
 services:
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    user: 0:0
-    expose:
-      - 8096
-    ports:
-      - 8096:8096
-    env_file:
-      - .env
-    volumes:
-      - ${ROOT}/jellyfin/config:/config
-      - ${ROOT}/jellyfin/cache:/cache
-      - wd3:/wd
-    restart: "unless-stopped"
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Etc/UTC
-    volumes:
-      - ${ROOT}/bazarr/config:/config
-    expose:
-      - 6767
-    ports:
-      - 6767:6767
-    restart: unless-stopped
-  qbittorrent:
-    image: linuxserver/qbittorrent
-    container_name: qbittorrent
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Europe/London
-      - WEBUI_PORT=8080
-    volumes:
-      - ${ROOT}/qbittorrent_config:/config
-      - ${ROOT}/downloads:/downloads
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
-    restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -62,6 +17,22 @@ services:
       - 7878
     ports:
       - 7878:7878
+    restart: unless-stopped
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - ${ROOT}/qbittorrent_config:/config
+      - ${ROOT}/downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
