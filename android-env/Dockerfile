@@ -57,7 +57,7 @@ RUN a2enmod php8.3 && a2enmod rewrite
 RUN mkdir -p /workspace && \
     chown -R www-data:www-data /workspace && \
     sed -i 's|/var/www/html|/workspace|' /etc/apache2/sites-available/000-default.conf && \
-    sed -i 's|/var/www/html|/workspace|' /etc/apache2/apache2.conf
+    sed -i 's|/var/www/|/workspace/|' /etc/apache2/apache2.conf
 
 # Create the base environment and install Python packages
 RUN micromamba create --yes --name base python=3.10 && \
