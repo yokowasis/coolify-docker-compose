@@ -14,6 +14,7 @@ ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
 
 # Install required dependencies, Apache, PHP, and Node.js LTS
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ssh \
     openjdk-17-jdk \
     wget \
     unzip \
