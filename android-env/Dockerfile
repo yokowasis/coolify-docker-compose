@@ -53,6 +53,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Configure Apache to enable PHP and rewrite module
 RUN a2enmod php8.3 && a2enmod rewrite
 
+# Change Apache working directory to /workspace
+RUN mkdir -p /workspace && \
+    chown -R www-data:www-data /workspace && \
+    sed -i 's|/var/www/html|/workspace|' /etc/apache2/sites-available/000-default.conf && \
+    sed -i 's|/var/www/html|/workspace|' /etc/apache2/apache2.conf
+
 # Create the base environment and install Python packages
 RUN micromamba create --yes --name base python=3.10 && \
     micromamba install --yes --name base fastapi[standard] pydantic jinja2 requests rembg pillow && \

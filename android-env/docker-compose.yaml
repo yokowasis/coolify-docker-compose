@@ -6,7 +6,6 @@ services:
       - .env
     volumes:
       - ${WORKSPACE}:/workspace
-      - ${WORKSPACE}:/var/www/html
       - home:/root
     ports:
       - "4080:8000"
