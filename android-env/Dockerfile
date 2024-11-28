@@ -84,10 +84,14 @@ RUN yes | sdkmanager --licenses
 RUN sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 # Install Gradle
-RUN wget https://services.gradle.org/distributions/gradle-8.3-bin.zip -O /gradle.zip && \
+RUN wget https://services.gradle.org/distributions/gradle-8.9-bin.zip -O /gradle.zip && \
     unzip /gradle.zip -d /opt && \
-    ln -s /opt/gradle-8.3/bin/gradle /usr/bin/gradle && \
+    ln -s /opt/gradle-8.9/bin/gradle /usr/bin/gradle && \
     rm /gradle.zip
+
+# add zipalign and apksigner to /usr/bin
+RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
+    ln -s /opt/android-sdk/build-tools/34.0.0/apksigner /usr/bin/apksigner
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
