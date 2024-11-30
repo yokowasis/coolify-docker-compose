@@ -61,7 +61,7 @@ RUN mkdir -p /workspace && \
 
 # Create the base environment and install Python packages
 RUN micromamba create --yes --name base python=3.10 && \
-    micromamba install --yes --name base fastapi[standard] pydantic jinja2 requests rembg pillow && \
+    micromamba install --yes --name base fastapi[standard] pydantic jinja2 requests rembg pillow pycryptodome ipykernel && \
     micromamba clean --all --yes
 
 # Configure micromamba shell
