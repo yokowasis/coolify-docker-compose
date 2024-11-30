@@ -90,9 +90,10 @@ RUN wget https://services.gradle.org/distributions/gradle-8.9-bin.zip -O /gradle
     ln -s /opt/gradle-8.9/bin/gradle /usr/bin/gradle && \
     rm /gradle.zip
 
-# add zipalign and apksigner to /usr/bin
+# add zipalign and apksigner to /usr/bin and symlink to path
 RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
-    ln -s /opt/android-sdk/build-tools/34.0.0/apksigner /usr/bin/apksigner
+    ln -s /opt/android-sdk/build-tools/34.0.0/apksigner /usr/bin/apksigner && \
+    ln -s /usr/bin/pnpm /usr/bin/p 
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
