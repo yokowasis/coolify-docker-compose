@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ssh \
     openjdk-17-jdk \
     wget \
+    zip \
     unzip \
     git \
     curl \
