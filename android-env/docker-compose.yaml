@@ -15,6 +15,7 @@ services:
       - "9003:9003"
       - "3000:3000"
       - "3001:3001"
+      - "8976:8976"
     working_dir: /workspace
     restart: unless-stopped
     tty: true
