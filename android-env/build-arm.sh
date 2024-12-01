@@ -1,0 +1,1 @@
+docker build -t yokowasis/android-build-env:arm64 --file ./arm64.Dockerfile .
