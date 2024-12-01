@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ssh \
     openjdk-17-jdk \
     wget \
+    zip \
     unzip \
     git \
     curl \
@@ -61,7 +62,7 @@ RUN mkdir -p /workspace && \
 
 # Create the base environment and install Python packages
 RUN micromamba create --yes --name base python=3.10 && \
-    micromamba install --yes --name base fastapi[standard] pydantic jinja2 requests rembg pillow && \
+    micromamba install --yes --name base fastapi[standard] pydantic jinja2 requests rembg pillow pycryptodome ipykernel && \
     micromamba clean --all --yes
 
 # Configure micromamba shell
@@ -84,10 +85,15 @@ RUN yes | sdkmanager --licenses
 RUN sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 # Install Gradle
-RUN wget https://services.gradle.org/distributions/gradle-8.3-bin.zip -O /gradle.zip && \
+RUN wget https://services.gradle.org/distributions/gradle-8.9-bin.zip -O /gradle.zip && \
     unzip /gradle.zip -d /opt && \
-    ln -s /opt/gradle-8.3/bin/gradle /usr/bin/gradle && \
+    ln -s /opt/gradle-8.9/bin/gradle /usr/bin/gradle && \
     rm /gradle.zip
+
+# add zipalign and apksigner to /usr/bin and symlink to path
+RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
+    ln -s /opt/android-sdk/build-tools/34.0.0/apksigner /usr/bin/apksigner && \
+    ln -s /usr/bin/pnpm /usr/bin/p 
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
