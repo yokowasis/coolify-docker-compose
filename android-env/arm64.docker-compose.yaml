@@ -6,12 +6,15 @@ services:
       - .env
     volumes:
       - ${WORKSPACE}:/workspace
-      - ${WORKSPACE}:/var/www/html
       - home:/root
     ports:
-      - "4080:8000"
-      - "4081:80"
+      - "5173:5173"
+      - "5174:5174"
+      - "8000:8000"
+      - "80:80"
       - "9003:9003"
+      - "3000:3000"
+      - "3001:3001"
     working_dir: /workspace
     restart: unless-stopped
     tty: true
