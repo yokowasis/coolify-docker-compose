@@ -1,0 +1,1 @@
+docker compose -f ./arm64.docker-compose.yaml up -d
