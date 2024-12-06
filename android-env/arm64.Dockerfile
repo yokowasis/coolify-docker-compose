@@ -69,7 +69,7 @@ RUN micromamba create --yes --name base python=3.10 && \
 SHELL ["/usr/local/bin/micromamba", "run", "-n", "base", "/bin/bash", "-c"]
 
 # Install Yarn and pnpm
-RUN npm install -g yarn pnpm
+RUN npm install -g yarn pnpm wrangler
 
 # Download and install the Android Command Line Tools
 RUN mkdir -p /opt/android-sdk/cmdline-tools && \
