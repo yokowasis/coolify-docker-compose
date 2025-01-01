@@ -6,7 +6,7 @@ services:
       - .env
     volumes:
       - ${WORKSPACE}:/workspace
-      - home:/root
+      - ${HOME}:/root
     ports:
       - "5173:5173"
       - "5174:5174"
