@@ -14,6 +14,9 @@ ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
 
 # Install required dependencies, Apache, PHP, and Node.js LTS
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gh \
+    ffmpeg \
+    yt-dlp \
     ssh \
     openjdk-17-jdk \
     wget \
@@ -47,9 +50,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs && \
     # Install micromamba
-    curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba && \
-    # Clean up
-    rm -rf /var/lib/apt/lists/*
+    curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba
 
 # Configure Apache to enable PHP and rewrite module
 RUN a2enmod php8.3 && a2enmod rewrite
