@@ -6,7 +6,7 @@ services:
       - .env
     volumes:
       - ${WORKSPACE}:/workspace
-      - ${HOME}:/root
+      - ${HOMEDIR}:/root
     ports:
       - "5173:5173"
       - "5174:5174"
@@ -74,5 +74,4 @@ services:
 volumes:
   mysql_data:
   postgres_data:
-  home:
   pgadmin_data:
