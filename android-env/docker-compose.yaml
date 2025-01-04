@@ -51,6 +51,8 @@ services:
 
   phppgadmin:
     image: dpage/pgadmin4
+    depends_on:
+      - postgres
     container_name: phppgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=yokowasis@gmail.com
@@ -63,6 +65,8 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
+    depends_on:
+      - mysql
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
