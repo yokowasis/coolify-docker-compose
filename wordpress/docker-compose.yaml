@@ -44,6 +44,8 @@ services:
       - 80
     depends_on:
       - mariadb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
 
 volumes:
   wordpress-files:
