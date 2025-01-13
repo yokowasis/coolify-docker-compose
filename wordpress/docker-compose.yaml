@@ -1,0 +1,38 @@
+services:
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - wordpress-files:/var/www/html
+    environment:
+      - SERVICE_FQDN_WORDPRESS
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_USER=${DB_USER}
+      - WORDPRESS_DB_PASSWORD=${DB_PASS}
+      - WORDPRESS_DB_NAME=${DB_NAME}
+    expose:
+      - 80
+    depends_on:
+      - mariadb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1"]
+      interval: 2s
+      timeout: 10s
+      retries: 10
+  mariadb:
+    image: mariadb:11
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 20s
+      retries: 10
+
+volumes:
+  wordpress-files:
+  mariadb-data:
