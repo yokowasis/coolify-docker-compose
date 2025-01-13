@@ -3,6 +3,7 @@ services:
     image: wordpress:latest
     volumes:
       - wordpress-files:/var/www/html
+      - conf-files:/etc/apache2/sites-available
     environment:
       - SERVICE_FQDN_WORDPRESS
       - WORDPRESS_DB_HOST=mariadb
@@ -36,3 +37,4 @@ services:
 volumes:
   wordpress-files:
   mariadb-data:
+  conf-files:
