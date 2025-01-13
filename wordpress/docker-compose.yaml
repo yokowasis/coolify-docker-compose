@@ -38,7 +38,7 @@ services:
     environment:
       - SERVICE_FQDN_PHPMYADMIN
       - PMA_HOST=mariadb
-      - PMA_USER=${DB_USER}
+      - PMA_USER=root
       - PMA_PASSWORD=${DB_PASS}
     expose:
       - 80
