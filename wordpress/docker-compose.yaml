@@ -33,6 +33,16 @@ services:
       interval: 5s
       timeout: 20s
       retries: 10
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_USER=${DB_USER}
+      - PMA_PASSWORD=${DB_PASS}
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
 
 volumes:
   wordpress-files:
