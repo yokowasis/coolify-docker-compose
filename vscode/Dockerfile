@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 ENV NVM_DIR=/opt/nvm
 RUN mkdir -p $NVM_DIR \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash \
-    && bash -c 'source $NVM_DIR/nvm.sh && nvm install 20 && npm i -g yarn pnpm'
-ENV PATH=$NVM_DIR/versions/node/v20.0.0/bin:$PATH
+    && bash -c 'source $NVM_DIR/nvm.sh && nvm install 22.14.0 && npm i -g yarn pnpm'
+ENV PATH=$NVM_DIR/versions/node/v22.14.0/bin:$PATH
 
 # Install Microsoft VS Code
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
@@ -25,14 +25,33 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /u
     && rm /usr/share/keyrings/microsoft.gpg
 
 # Install Python and virtualenv
-RUN apt-get update && apt-get install -y python3.10 python3.10-venv \
-    && python3.10 -m venv /opt/venv \
-    && . /opt/venv/bin/activate
+RUN apt-get update -y && apt-get install -y python3.12 python3.12-venv \
+    && python3.12 -m venv /opt/venv
 
+# Install MariaDB, Apache, PHP and common PHP extensions
+RUN apt-get update -y && apt-get install -y \
+    mariadb-server \
+    apache2 \
+    php \
+    libapache2-mod-php \
+    php-mysql \
+    php-curl \
+    php-mbstring \
+    php-xml \
+    php-zip \
+    php-gd \
+    php-bcmath \
+    php-intl
+
+# Set environment variable for token.
+# (For sensitive data, consider passing it at runtime with -e TOKEN=your_token)
 ENV TOKEN="333333"
 
-# Start VS Code to listen on all interfaces and with specified connection token
-ENTRYPOINT ["sh", "-c", ". /opt/nvm/nvm.sh && /usr/bin/code serve-web --host 0.0.0.0 --port 8080 --connection-token $TOKEN"]
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Expose port 8080 (default port for VS Code)
-EXPOSE 8080
+# Expose ports for VS Code (8080), Apache (80) and MariaDB (3306)
+EXPOSE 8080 80 3306
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
