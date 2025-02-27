@@ -1,11 +1,9 @@
-# port : 8006
-
 services:
   windows:
     image: dockurr/windows
     container_name: windows
     environment:
-      - VERSION: "ltsc10"
+      - VERSION=${VERSION:-ltsc10}
       - SERVICE_FQDN_WINDOWS
     devices:
       - /dev/kvm
@@ -17,8 +15,7 @@ services:
       - 3389
     stop_grace_period: 2m
     volumes:
-      - windows_data:/storage
-      - /root:/data
-
+      - 'windows_data:/storage'
+      - '/root:/data'
 volumes:
-  windows_data:
+  windows_data: null
