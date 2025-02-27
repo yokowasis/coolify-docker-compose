@@ -30,6 +30,29 @@ RUN apt-get update -y && apt-get install -y python3.12 python3.12-venv \
 
 # Install MariaDB, Apache, PHP and common PHP extensions
 RUN apt-get update -y && apt-get install -y \
+    gh \
+    ffmpeg \
+    yt-dlp \
+    ssh \
+    openjdk-17-jdk \
+    wget \
+    zip \
+    unzip \
+    bzip2 \
+    libglib2.0-0 \
+    libxext6 \
+    libsm6 \
+    libxrender1 \
+    php-cli \
+    php-common \
+    php-soap \
+    php-redis \
+    php-xdebug \
+    ninja-build \
+    gettext \
+    cmake \
+    curl \
+    build-essential \
     mariadb-server \
     apache2 \
     php \
