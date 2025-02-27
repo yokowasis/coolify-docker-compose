@@ -6,28 +6,12 @@
 
 services:
   vscode:
-    image: ubuntu:22.04
+    image: yokowasis/msvscode
     expose:
       - 8080
     environment:
       - SERVICE_FQDN_MSVSCODE
-      - NVM_DIR=/opt/nvm
       - TOKEN=${SERVICE_PASSWORD_TOKEN}
-    entrypoint: >
-      /bin/bash -c "
-      apt-get update &&
-      apt-get install -y curl git openssh-client gnupg ca-certificates apt-transport-https software-properties-common &&
-      mkdir -p /opt/nvm &&
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash &&
-      source /opt/nvm/nvm.sh && nvm install 20 && npm i -g yarn pnpm &&
-      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg &&
-      echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main' > /etc/apt/sources.list.d/vscode.list &&
-      apt-get update &&
-      apt-get install -y code python3.10 python3.10-venv &&
-      python3.10 -m venv /opt/venv &&
-      . /opt/venv/bin/activate &&
-      /usr/bin/code serve-web --host 0.0.0.0 --port 8080 --connection-token ${SERVICE_PASSWORD_TOKEN}
-      "
     healthcheck:
       test:
         [
