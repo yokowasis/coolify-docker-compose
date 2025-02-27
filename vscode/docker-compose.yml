@@ -27,3 +27,4 @@ services:
     volumes:
       - msvscode_data:/root
       - mariadb_data:/var/lib/mysql
+      - apache_data:/var/www/html
