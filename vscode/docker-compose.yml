@@ -26,3 +26,4 @@ services:
     restart: unless-stopped
     volumes:
       - msvscode_data:/root
+      - mariadb_data:/var/lib/mysql
