@@ -68,7 +68,7 @@ RUN apt-get update -y && apt-get install -y \
 
 # Set environment variable for token.
 # (For sensitive data, consider passing it at runtime with -e TOKEN=your_token)
-ENV TOKEN="333333"
+ENV TOKEN="3333333"
 
 # Copy the entrypoint script into the container
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
