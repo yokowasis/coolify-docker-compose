@@ -5,6 +5,7 @@ on:
     paths:
       - "android-env/Dockerfile"
       - ".github/workflows/docker-image-build.yml"
+      - "vscode/Dockerfile"
 
 jobs:
   build-and-push:
