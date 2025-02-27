@@ -1,0 +1,27 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    paths:
+      - "vscode/Dockerfile"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image VSCode Env
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/msvscode:latest ./vscode
+
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/msvscode:latest
