@@ -1,20 +1,24 @@
+# port : 8006
+
 services:
   windows:
     image: dockurr/windows
     container_name: windows
     environment:
-      VERSION: "ltsc10"
+      - VERSION: "ltsc10"
+      - SERVICE_FQDN_WINDOWS
     devices:
       - /dev/kvm
+      - /dev/net/tun
     cap_add:
       - NET_ADMIN
-    ports:
-      - 8006:8006
-      - 3389:3389/tcp
-      - 3389:3389/udp
+    expose:
+      - 8006
+      - 3389
     stop_grace_period: 2m
     volumes:
       - windows_data:/storage
+      - /root:/data
 
 volumes:
   windows_data:
