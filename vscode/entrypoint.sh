@@ -7,6 +7,9 @@ service apache2 start
 echo "Starting MariaDB..."
 service mariadb start
 
+echo "Enable Rewrite module..."
+a2enmod rewrite
+
 echo "Starting VS Code server..."
 /opt/nvm/nvm.sh
 

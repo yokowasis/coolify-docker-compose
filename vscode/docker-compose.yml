@@ -28,3 +28,4 @@ services:
       - msvscode_data:/root
       - mariadb_data:/var/lib/mysql
       - apache_data:/var/www/html
+      - apache_conf:/etc/apache2
