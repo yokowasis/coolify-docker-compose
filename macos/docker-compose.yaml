@@ -4,6 +4,7 @@ services:
     container_name: macos
     environment:
       - VERSION=15
+      - DISK_SIZE=128G
     devices:
       - /dev/kvm
       - /dev/net/tun
