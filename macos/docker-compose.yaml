@@ -9,9 +9,9 @@ services:
       - /dev/net/tun
     cap_add:
       - NET_ADMIN
-    expose:
-      - 8006
-      - 3389
+    ports:
+      - 8006:8006
+      - 3389:3389
     stop_grace_period: 2m
     volumes:
       - ./macos:/storage
