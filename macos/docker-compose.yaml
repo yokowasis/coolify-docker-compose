@@ -1,5 +1,5 @@
 services:
-  windows:
+  macos:
     image: dockurr/macos
     container_name: macos
     environment:
@@ -17,4 +17,4 @@ services:
       - ./macos:/storage
       - /:/shared
 volumes:
-  windows_data: null
+  macos_data: null
