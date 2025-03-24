@@ -3,8 +3,10 @@ services:
     image: dockurr/macos
     container_name: macos
     environment:
-      - VERSION=15
+      - VERSION=14
       - DISK_SIZE=128G
+      - RAM_SIZE=8G
+      - CPU_CORES=4
     devices:
       - /dev/kvm
       - /dev/net/tun
@@ -13,6 +15,9 @@ services:
     ports:
       - 8006:8006
       - 3389:3389
+      - 6900:5900
+      - 6901:5901
+      - 6902:5902
     stop_grace_period: 2m
     volumes:
       - ./macos:/storage
