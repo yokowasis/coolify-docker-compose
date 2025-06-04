@@ -110,7 +110,8 @@ RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
     rm /go.tar.gz && \
     ln -s /usr/local/go/bin/go /usr/bin/go && \
     ln -s /usr/local/go/bin/gofmt /usr/bin/gofmt && \
-    go install github.com/lemonade-command/lemonade@latest
+    go install github.com/lemonade-command/lemonade@latest && \
+    go install github.com/air-verse/air@latest
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
