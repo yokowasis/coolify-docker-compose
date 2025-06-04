@@ -16,7 +16,6 @@ ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gh \
     ffmpeg \
-    yt-dlp \
     ssh \
     openjdk-17-jdk \
     wget \
@@ -105,7 +104,12 @@ RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
     cd /tmp/neovim && \
     git checkout stable && \
     make CMAKE_BUILD_TYPE=RelWithDebInfo && \
-    make install
+    make install && \
+    wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz -O /go.tar.gz && \
+    tar -C /usr/local -xzf /go.tar.gz && \
+    rm /go.tar.gz && \
+    ln -s /usr/local/go/bin/go /usr/bin/go && \
+    ln -s /usr/local/go/bin/gofmt /usr/bin/gofmt
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
