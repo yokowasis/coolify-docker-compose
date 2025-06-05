@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jdk \
     wget \
     zip \
+    ripgrep \
     unzip \
     git \
     curl \
