@@ -101,9 +101,10 @@ RUN wget https://services.gradle.org/distributions/gradle-8.9-bin.zip -O /gradle
 # add zipalign and apksigner to /usr/bin and symlink to path
 RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
     ln -s /opt/android-sdk/build-tools/34.0.0/apksigner /usr/bin/apksigner && \
-    ln -s /usr/bin/pnpm /usr/bin/p && \
-    # Install Neovim from source
-    git clone https://github.com/neovim/neovim.git /tmp/neovim && \
+    ln -s /usr/bin/pnpm /usr/bin/p
+
+# Install Neovim from source
+RUN git clone https://github.com/neovim/neovim.git /tmp/neovim && \
     cd /tmp/neovim && \
     git checkout stable && \
     make CMAKE_BUILD_TYPE=RelWithDebInfo && \
