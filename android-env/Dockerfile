@@ -123,7 +123,7 @@ RUN go install github.com/lemonade-command/lemonade@latest && \
     mv /opt/go/bin/lemonade /opt/go/bin/lemon && \
     echo "#/bin/bash" > /opt/go/bin/lemonade && \
     echo "/opt/go/bin/lemon --host=\"host.docker.internal\" \$@" >> /opt/go/bin/lemonade && \
-    chmod a+x "/usr/local/bin/lemonade"
+    chmod a+x "/opt/go/bin/lemonade"
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
