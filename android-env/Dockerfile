@@ -107,16 +107,21 @@ RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
     cd /tmp/neovim && \
     git checkout stable && \
     make CMAKE_BUILD_TYPE=RelWithDebInfo && \
-    make install && \
-    wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz -O /go.tar.gz && \
+    make install
+
+# golang
+RUN wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz -O /go.tar.gz && \
     tar -C /usr/local -xzf /go.tar.gz && \
     rm /go.tar.gz && \
     ln -s /usr/local/go/bin/go /usr/bin/go && \
-    ln -s /usr/local/go/bin/gofmt /usr/bin/gofmt && \
-    go install github.com/lemonade-command/lemonade@latest && \
+    ln -s /usr/local/go/bin/gofmt /usr/bin/gofmt
+
+# go package
+RUN go install github.com/lemonade-command/lemonade@latest && \
     go install github.com/air-verse/air@latest && \
-    echo "#/bin/bash" > /usr/local/bin/lemonade && \
-    echo "/root/go/bin/lemonade --host=\"host.docker.internal\" \$@" >> /usr/local/bin/lemonade && \
+    mv /opt/go/bin/lemonade /opt/go/bin/lemon && \
+    echo "#/bin/bash" > /opt/go/bin/lemonade && \
+    echo "/opt/go/bin/lemon --host=\"host.docker.internal\" \$@" >> /opt/go/bin/lemonade && \
     chmod a+x "/usr/local/bin/lemonade"
 
 # Configure Xdebug
