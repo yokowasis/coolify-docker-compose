@@ -10,7 +10,10 @@ ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$AN
 
 # Set environment variables for micromamba
 ENV MAMBA_ROOT_PREFIX=/opt/conda
-ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
+ENV PATH=$MAMBA_ROOT_PREFIX/bin:/opt/go/bin:$PATH
+
+# Set environment variables for GO
+ENV GOBIN=/opt/go/bin
 
 # Install required dependencies, Apache, PHP, and Node.js LTS
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -113,7 +116,8 @@ RUN ln -s /opt/android-sdk/build-tools/34.0.0/zipalign /usr/bin/zipalign && \
     go install github.com/lemonade-command/lemonade@latest && \
     go install github.com/air-verse/air@latest && \
     echo "#/bin/bash" > /usr/local/bin/lemonade && \
-    echo "/root/go/bin/lemonade --host=\"host.docker.internal\" \$@" >> /usr/local/bin/lemonade
+    echo "/root/go/bin/lemonade --host=\"host.docker.internal\" \$@" >> /usr/local/bin/lemonade && \
+    chmod a+x "/usr/local/bin/lemonade"
 
 # Configure Xdebug
 RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
