@@ -55,6 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     build-essential
 
+
 # Install NodejS LTS
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs
@@ -134,6 +135,9 @@ RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/
     echo "xdebug.start_with_request=yes" >> /etc/php/8.3/apache2/php.ini && \
     echo "xdebug.client_host=host.docker.internal" >> /etc/php/8.3/apache2/php.ini && \
     echo "xdebug.client_port=9003" >> /etc/php/8.3/apache2/php.ini
+
+# Additional Package
+RUN apt install sudo
 
 # Expose Apache port
 EXPOSE 80
