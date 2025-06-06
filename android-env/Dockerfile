@@ -114,8 +114,15 @@ RUN git clone https://github.com/neovim/neovim.git /tmp/neovim && \
     make CMAKE_BUILD_TYPE=RelWithDebInfo && \
     make install
 
+# Configure Xdebug
+RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.mode=debug" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.start_with_request=yes" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.client_host=host.docker.internal" >> /etc/php/8.3/apache2/php.ini && \
+    echo "xdebug.client_port=9003" >> /etc/php/8.3/apache2/php.ini
+
 # golang
-RUN wget https://go.dev/dl/go1.24.3.linux-amd64.tar.gz -O /go.tar.gz && \
+RUN wget https://go.dev/dl/go1.24.2.linux-amd64.tar.gz -O /go.tar.gz && \
     tar -C /usr/local -xzf /go.tar.gz && \
     rm /go.tar.gz && \
     ln -s /usr/local/go/bin/go /usr/bin/go && \
@@ -129,15 +136,13 @@ RUN go install github.com/lemonade-command/lemonade@latest && \
     echo "/opt/go/bin/lemon --host=\"host.docker.internal\" \$@" >> /opt/go/bin/lemonade && \
     chmod a+x "/opt/go/bin/lemonade"
 
-# Configure Xdebug
-RUN echo "zend_extension=$(find /usr/lib/php/ -name xdebug.so)" >> /etc/php/8.3/apache2/php.ini && \
-    echo "xdebug.mode=debug" >> /etc/php/8.3/apache2/php.ini && \
-    echo "xdebug.start_with_request=yes" >> /etc/php/8.3/apache2/php.ini && \
-    echo "xdebug.client_host=host.docker.internal" >> /etc/php/8.3/apache2/php.ini && \
-    echo "xdebug.client_port=9003" >> /etc/php/8.3/apache2/php.ini
-
 # Additional Package
-RUN apt install sudo
+RUN apt install -y sudo 
+
+# Install Copilot CLI
+RUN echo "#/bin/bash" > /opt/copilot-cli.sh && \
+    echo "gh extension install github/gh-copilot" >> /opt/copilot-cli.sh && \
+    chmod a+x /opt/copilot-cli.sh
 
 # Expose Apache port
 EXPOSE 80
