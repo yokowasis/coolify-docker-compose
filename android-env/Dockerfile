@@ -19,6 +19,7 @@ ENV GOBIN=/opt/go/bin
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gh \
     ffmpeg \
+    lsof \
     ssh \
     openjdk-17-jdk \
     wget \
