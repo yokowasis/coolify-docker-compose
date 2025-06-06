@@ -53,13 +53,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gettext \
     cmake \
     curl \
-    build-essential \
-    && \
-    # Install Node.js LTS
-    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt-get install -y nodejs && \
-    # Install micromamba
-    curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba
+    build-essential
+
+# Install NodejS LTS
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs
+
+# Install micromamba
+RUN curl -L https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba
 
 # Configure Apache to enable PHP and rewrite module
 RUN a2enmod php8.3 && a2enmod rewrite
