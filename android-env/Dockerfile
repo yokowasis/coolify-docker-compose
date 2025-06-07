@@ -144,6 +144,10 @@ RUN echo "#/bin/bash" > /opt/copilot-cli.sh && \
     echo "gh extension install github/gh-copilot" >> /opt/copilot-cli.sh && \
     chmod a+x /opt/copilot-cli.sh
 
+ENV PATH=$MAMBA_ROOT_PREFIX/bin:/opt/go/bin:/opt/scripts/:$PATH
+
+COPY scripts/ /opt/scripts/
+
 # Expose Apache port
 EXPOSE 80
 
