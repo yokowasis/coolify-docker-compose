@@ -144,7 +144,13 @@ RUN echo "#/bin/bash" > /opt/copilot-cli.sh && \
     echo "gh extension install github/gh-copilot" >> /opt/copilot-cli.sh && \
     chmod a+x /opt/copilot-cli.sh
 
-ENV PATH=$MAMBA_ROOT_PREFIX/bin:/opt/go/bin:/opt/scripts/:$PATH
+RUN mkdir -p /opt/bin
+
+# yt-dlp
+RUN wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /opt/bin/yt-dlp
+RUN chmod a+x /opt/bin/yt-dlp  # Make executable
+
+ENV PATH=$MAMBA_ROOT_PREFIX/bin:/opt/go/bin:/opt/scripts/:/opt/bin/:$PATH
 
 COPY scripts/ /opt/scripts/
 
